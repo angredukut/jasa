@@ -1,0 +1,415 @@
+/* Reset CSS & Variabel Warna Global */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+:root {
+    --primary-color: #0284c7; /* Biru Modern */
+    --secondary-color: #10b981; /* Hijau Segar */
+    --text-dark: #1f2937;
+    --text-light: #6b7280;
+    --bg-light: #f8fafc;
+    --white: #ffffff;
+    --border-color: #e2e8f0;
+}
+
+body {
+    background-color: var(--bg-light);
+    color: var(--text-dark);
+    padding-bottom: 80px; /* Jarak agar tidak tertutup bottom nav */
+    max-width: 480px; /* Membuat tampilan seperti aplikasi mobile di desktop */
+    margin: 0 auto;
+    box-shadow: 0 0 20px rgba(0,0,0,0.05);
+    min-height: 100vh;
+}
+
+/* Header */
+.main-header {
+    background: var(--white);
+    padding: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--text-dark);
+}
+
+.logo span {
+    color: var(--primary-color);
+}
+
+.location-badge {
+    background: #f1f5f9;
+    padding: 6px 12px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.location-badge svg {
+    width: 14px;
+    height: 14px;
+}
+
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(135deg, #0c4a6e 0%, #0284c7 100%);
+    color: var(--white);
+    padding: 28px 16px;
+    border-radius: 0 0 24px 24px;
+}
+
+.hero-section h1 {
+    font-size: 22px;
+    margin-bottom: 8px;
+}
+
+.hero-section p {
+    font-size: 13px;
+    opacity: 0.9;
+    margin-bottom: 20px;
+}
+
+.search-bar {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.search-bar svg {
+    color: var(--text-light);
+    width: 20px;
+}
+
+.search-bar input {
+    border: none;
+    outline: none;
+    width: 100%;
+    font-size: 14px;
+}
+
+/* Containers */
+.section-container {
+    padding: 20px 16px 0 16px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.section-title {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.see-all {
+    font-size: 12px;
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+/* Category Grid */
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.category-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+}
+
+.category-card .icon-box {
+    background: var(--white);
+    width: 54px;
+    height: 54px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 6px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    border: 1px solid var(--border-color);
+    transition: all 0.2s ease;
+}
+
+.category-card .icon-box svg {
+    width: 22px;
+    color: var(--text-dark);
+}
+
+.category-card span {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.category-card.active .icon-box {
+    background: #e0f2fe;
+    border-color: var(--primary-color);
+}
+
+.category-card.active .icon-box svg {
+    color: var(--primary-color);
+}
+
+/* Mitra Cards Grid */
+.mitra-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.kartu-mitra {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 16px;
+    border: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.01);
+}
+
+.info-mitra h3 {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.badge-jasa {
+    background: #f1f5f9;
+    color: var(--text-light);
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 6px;
+    display: inline-block;
+    margin-bottom: 6px;
+    font-weight: 600;
+}
+
+.harga-jasa {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--secondary-color);
+}
+
+.btn-pesan {
+    background: var(--primary-color);
+    color: var(--white);
+    border: none;
+    padding: 10px 16px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-pesan:hover {
+    background: #0369a1;
+}
+
+.skeleton-loading {
+    text-align: center;
+    color: var(--text-light);
+    font-size: 13px;
+    padding: 4px;
+}
+
+/* Bottom Navigation */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 480px;
+    background: var(--white);
+    display: flex;
+    justify-content: space-around;
+    padding: 12px;
+    border-top: 1px solid var(--border-color);
+    z-index: 100;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: var(--text-light);
+    gap: 4px;
+}
+
+.nav-item svg {
+    width: 20px;
+    height: 20px;
+}
+
+.nav-item span {
+    font-size: 10px;
+    font-weight: 600;
+}
+
+.nav-item.active {
+    color: var(--primary-color);
+}
+/* ================= STYLING DASHBOARD MITRA ================= */
+
+/* Card Dompet Finansial */
+.wallet-card {
+    background: linear-gradient(135deg, #0f766e 0%, #10b981 100%);
+    color: var(--white);
+    padding: 20px;
+    border-radius: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2);
+}
+
+.wallet-info span {
+    font-size: 11px;
+    opacity: 0.9;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.wallet-info h2 {
+    font-size: 22px;
+    margin-top: 4px;
+    font-weight: 700;
+}
+
+.btn-withdraw {
+    background: var(--white);
+    color: #0f766e;
+    border: none;
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* Custom Toggle Switch untuk Buka/Tutup Toko */
+.switch-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-light);
+    cursor: pointer;
+}
+
+.switch-container input {
+    display: none;
+}
+
+.slider {
+    width: 34px;
+    height: 20px;
+    background-color: #cbd5e1;
+    border-radius: 20px;
+    position: relative;
+    transition: .3s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 14px;
+    width: 14px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    border-radius: 50%;
+    transition: .3s;
+}
+
+input:checked + .slider {
+    background-color: var(--secondary-color);
+}
+
+input:checked + .slider:before {
+    transform: translateX(14px);
+}
+
+/* Card Transaksi Pesanan */
+.card-pesanan {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 14px;
+    border: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.pesanan-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px dashed var(--border-color);
+    padding-bottom: 8px;
+}
+
+.id-tx {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.status-badge {
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 700;
+}
+
+.status-badge.pending { background: #fef3c7; color: #d97706; }
+.status-badge.selesai { background: #d1fae5; color: #059669; }
+
+.btn-selesai-kerja {
+    background: var(--secondary-color);
+    color: var(--white);
+    border: none;
+    padding: 8px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    text-align: center;
+    width: 100%;
+}
