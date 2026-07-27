@@ -3,7 +3,63 @@ const API_URL = "https://script.google.com/macros/s/AKfycbxjhfDKXOhXac2MFzKpORXR
 let semuaMitra = [];
 let userAktif = null; // Menyimpan data siapa yang sedang login
 let tipeLoginSekarang = 'konsumen'; // Default tab login
+// Pastikan variabel ini ada di paling atas app.js
+let tipeLoginSekarang = 'konsumen'; 
 
+function setTipeLogin(tipe) {
+    tipeLoginSekarang = tipe;
+    console.log("Tab dipilih:", tipeLoginSekarang);
+    
+    // Update visual tombol tab
+    document.getElementById('tab-btn-konsumen').classList.toggle('active', tipe === 'konsumen');
+    document.getElementById('tab-btn-mitra').classList.toggle('active', tipe === 'mitra');
+}
+
+async function prosesLogin() {
+    const idInput = document.getElementById('login-id').value.toUpperCase(); // Paksa huruf besar
+    const pinInput = document.getElementById('login-pin').value;
+
+    console.log("Mencoba Login:", { idInput, pinInput, tipeLoginSekarang });
+
+    if (!idInput || !pinInput) {
+        alert("ID dan PIN tidak boleh kosong!");
+        return;
+    }
+
+    // LOGIKA VALIDASI:
+    let loginBerhasil = false;
+
+    if (tipeLoginSekarang === 'mitra' && idInput.startsWith('MITRA')) {
+        userAktif = { id: idInput, nama: "Owner " + idInput, role: 'mitra' };
+        loginBerhasil = true;
+    } else if (tipeLoginSekarang === 'konsumen' && idInput.startsWith('USR')) {
+        userAktif = { id: idInput, nama: "Pelanggan " + idInput, role: 'konsumen' };
+        loginBerhasil = true;
+    } else {
+        alert(`Gagal! Anda berada di tab ${tipeLoginSekarang.toUpperCase()}, tapi menggunakan ID ${idInput}. Pastikan tab dan ID sesuai.`);
+        return;
+    }
+
+    if (loginBerhasil) {
+        console.log("Login Berhasil sebagai:", userAktif.role);
+        masukKeAplikasi();
+    }
+}
+
+function masukKeAplikasi() {
+    // 1. Sembunyikan layar login, tampilkan konten utama
+    document.getElementById('halaman-login').style.display = 'none';
+    document.getElementById('app-content').style.display = 'block';
+    
+    // 2. Arahkan halaman sesuai role
+    if (userAktif.role === 'mitra') {
+        document.getElementById('nama-mitra-aktif').innerText = userAktif.id;
+        pindahHalaman('mitra'); // Ini akan memicu muatDataDashboardMitra()
+    } else {
+        document.getElementById('nama-user-aktif').innerText = userAktif.nama;
+        pindahHalaman('konsumen'); // Ini akan memicu muatDaftarMitra()
+    }
+}
 // 1. LOGIKA LOGIN & AUTH
 function setTipeLogin(tipe) {
     tipeLoginSekarang = tipe;
