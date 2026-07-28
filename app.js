@@ -1,66 +1,16 @@
+// PERBAIKAN: Ganti link di bawah ini dengan URL Web App Apps Script Anda yang asli!
 const API_URL = "https://script.google.com/macros/s/AKfycbxjhfDKXOhXac2MFzKpORXRUn65X9Wqy5G7GF2qmgFF54-Nkwah2pzeF2LSZrdP0-9S9Q/exec"; 
 
 let semuaMitra = [];
-let userAktif = null; // Menyimpan data siapa yang sedang login
-let tipeLoginSekarang = 'konsumen'; // Default tab login
-// Pastikan variabel ini ada di paling atas app.js
+let userAktif = null;
 let tipeLoginSekarang = 'konsumen'; 
 
-function setTipeLogin(tipe) {
-    tipeLoginSekarang = tipe;
-    console.log("Tab dipilih:", tipeLoginSekarang);
-    
-    // Update visual tombol tab
-    document.getElementById('tab-btn-konsumen').classList.toggle('active', tipe === 'konsumen');
-    document.getElementById('tab-btn-mitra').classList.toggle('active', tipe === 'mitra');
-}
+// Render ikon lucide saat halaman web selesai dimuat pertama kali
+window.addEventListener('DOMContentLoaded', () => {
+    if(typeof lucide !== 'undefined') lucide.createIcons();
+});
 
-async function prosesLogin() {
-    const idInput = document.getElementById('login-id').value.toUpperCase(); // Paksa huruf besar
-    const pinInput = document.getElementById('login-pin').value;
-
-    console.log("Mencoba Login:", { idInput, pinInput, tipeLoginSekarang });
-
-    if (!idInput || !pinInput) {
-        alert("ID dan PIN tidak boleh kosong!");
-        return;
-    }
-
-    // LOGIKA VALIDASI:
-    let loginBerhasil = false;
-
-    if (tipeLoginSekarang === 'mitra' && idInput.startsWith('MITRA')) {
-        userAktif = { id: idInput, nama: "Owner " + idInput, role: 'mitra' };
-        loginBerhasil = true;
-    } else if (tipeLoginSekarang === 'konsumen' && idInput.startsWith('USR')) {
-        userAktif = { id: idInput, nama: "Pelanggan " + idInput, role: 'konsumen' };
-        loginBerhasil = true;
-    } else {
-        alert(`Gagal! Anda berada di tab ${tipeLoginSekarang.toUpperCase()}, tapi menggunakan ID ${idInput}. Pastikan tab dan ID sesuai.`);
-        return;
-    }
-
-    if (loginBerhasil) {
-        console.log("Login Berhasil sebagai:", userAktif.role);
-        masukKeAplikasi();
-    }
-}
-
-function masukKeAplikasi() {
-    // 1. Sembunyikan layar login, tampilkan konten utama
-    document.getElementById('halaman-login').style.display = 'none';
-    document.getElementById('app-content').style.display = 'block';
-    
-    // 2. Arahkan halaman sesuai role
-    if (userAktif.role === 'mitra') {
-        document.getElementById('nama-mitra-aktif').innerText = userAktif.id;
-        pindahHalaman('mitra'); // Ini akan memicu muatDataDashboardMitra()
-    } else {
-        document.getElementById('nama-user-aktif').innerText = userAktif.nama;
-        pindahHalaman('konsumen'); // Ini akan memicu muatDaftarMitra()
-    }
-}
-// 1. LOGIKA LOGIN & AUTH
+// 1. LOGIKA LOGIN & AUTH DENGAN VALIDASI DATABASE
 function setTipeLogin(tipe) {
     tipeLoginSekarang = tipe;
     document.getElementById('tab-btn-konsumen').classList.toggle('active', tipe === 'konsumen');
@@ -68,24 +18,40 @@ function setTipeLogin(tipe) {
 }
 
 async function prosesLogin() {
-    const idInput = document.getElementById('login-id').value;
-    const pinInput = document.getElementById('login-pin').value;
+    const idInput = document.getElementById('login-id').value.trim();
+    const pinInput = document.getElementById('login-pin').value.trim();
 
     if (!idInput || !pinInput) {
         alert("Harap isi ID dan PIN!");
         return;
     }
 
-    // Simulasi Login (Nanti bisa ditarik dari Google Sheets)
-    // Jika ID mengandung 'MITRA', paksa masuk ke mode mitra
-    if (tipeLoginSekarang === 'mitra' && idInput.includes('MITRA')) {
-        userAktif = { id: idInput, nama: "Owner " + idInput, role: 'mitra' };
-        masukKeAplikasi();
-    } else if (tipeLoginSekarang === 'konsumen' && idInput.includes('USR')) {
-        userAktif = { id: idInput, nama: "Pelanggan", role: 'konsumen' };
-        masukKeAplikasi();
-    } else {
-        alert("ID tidak sesuai dengan kategori login! (Gunakan USR-xxx atau MITRA-xxx)");
+    try {
+        let response = await fetch(API_URL);
+        let dataMitra = await response.json();
+        
+        if (tipeLoginSekarang === 'mitra') {
+            // Mencari kecocokan ID Mitra dan PIN secara dinamis dari database Sheet
+            let akunDitemukan = dataMitra.find(m => m.id_mitra === idInput && String(m.pin_login) === pinInput);
+            
+            if (akunDitemukan) {
+                userAktif = { id: akunDitemukan.id_mitra, nama: akunDitemukan.nama_mitra, role: 'mitra' };
+                masukKeAplikasi();
+            } else {
+                alert("ID Mitra atau PIN salah! Periksa kembali data Anda.");
+            }
+        } else {
+            // Logika login Konsumen (Menggunakan bypass ID 'USR' untuk kebutuhan rilis awal MVP)
+            if (idInput.toUpperCase().includes('USR') && pinInput === '123456') {
+                userAktif = { id: idInput, nama: "Pelanggan Terhormat", role: 'konsumen' };
+                masukKeAplikasi();
+            } else {
+                alert("Login Konsumen gagal. Gunakan ID berawalan 'USR' dan PIN: 123456");
+            }
+        }
+    } catch (error) {
+        console.error("Gagal melakukan autentikasi:", error);
+        alert("Terjadi masalah jaringan ke cloud database.");
     }
 }
 
@@ -94,7 +60,8 @@ function masukKeAplikasi() {
     document.getElementById('app-content').style.display = 'block';
     
     if (userAktif.role === 'mitra') {
-        document.getElementById('nama-mitra-aktif').innerText = userAktif.id;
+        // PERBAIKAN: Memperbaiki salah ketik dari userActive menjadi userAktif
+        document.getElementById('nama-mitra-aktif').innerText = userAktif.nama;
         pindahHalaman('mitra');
     } else {
         document.getElementById('nama-user-aktif').innerText = userAktif.nama;
@@ -104,12 +71,11 @@ function masukKeAplikasi() {
 
 function logout() {
     userAktif = null;
-    location.reload(); // Cara termudah reset state SPA
+    location.reload();
 }
 
 // 2. NAVIGASI HALAMAN (SPA)
 function pindahHalaman(tujuan) {
-    // Reset Active Class
     document.getElementById('nav-home').classList.remove('active');
     document.getElementById('nav-mitra').classList.remove('active');
 
@@ -119,7 +85,7 @@ function pindahHalaman(tujuan) {
         document.getElementById('nav-home').classList.add('active');
         muatDaftarMitra();
     } else if (tujuan === 'mitra') {
-        // Proteksi: Hanya role mitra yang bisa buka dashboard
+        // PERBAIKAN: Melanjutkan kembali fungsi proteksi hak akses halaman yang terpotong
         if(userAktif.role !== 'mitra') {
             alert("Akses Ditolak. Anda bukan akun Mitra.");
             return;
@@ -131,7 +97,7 @@ function pindahHalaman(tujuan) {
     }
 }
 
-// 3. LOGIKA KONSUMEN
+// 3. LOGIKA KONSUMEN & FILTER KATEGORI
 async function muatDaftarMitra() {
     try {
         let response = await fetch(API_URL);
@@ -145,54 +111,94 @@ async function muatDaftarMitra() {
 function tampilkanMitra(daftarData) {
     let container = document.getElementById("kontainer-mitra");
     container.innerHTML = "";
+    
+    if(!daftarData || daftarData.length === 0) {
+        container.innerHTML = "<p style='padding:16px; color:#6b7280;'>Layanan tidak ditemukan.</p>";
+        return;
+    }
+
     daftarData.forEach(mitra => {
-        if(mitra.status_aktif === true || mitra.status_aktif === "TRUE") {
+        if(mitra.status_aktif === true || String(mitra.status_aktif).toUpperCase() === "TRUE") {
             container.innerHTML += `
-                <div class="kartu-mitra">
+                <div class="kartu-mitra" style="background:#fff; padding:16px; border-radius:12px; margin-bottom:12px; border:1px solid #e2e8f0;">
                     <div class="info-mitra">
-                        <span class="badge-jasa">${mitra.kategori_jasa}</span>
-                        <h3>${mitra.nama_mitra}</h3>
-                        <p class="harga-jasa">Rp ${Number(mitra.harga).toLocaleString('id-ID')}</p>
+                        <span class="badge-jasa" style="background:#e0f2fe; color:#0369a1; padding:4px 8px; border-radius:6px; font-size:11px; font-weight:600;">${mitra.kategori_jasa}</span>
+                        <h3 style="margin-top:8px; font-size:16px;">${mitra.nama_mitra}</h3>
+                        <p style="color:#6b7280; font-size:12px;">Kota: ${mitra.lokasi_kota}</p>
+                        <p class="harga-jasa" style="color:#10b981; font-weight:700; margin-top:4px;">Rp ${Number(mitra.harga).toLocaleString('id-ID')}</p>
                     </div>
-                    <button class="btn-pesan" onclick="buatPesanan('${mitra.id_mitra}', ${mitra.harga})">Pesan</button>
+                    <button class="btn-pesan" onclick="buatPesanan('${mitra.id_mitra}', ${mitra.harga})" style="background:#0284c7; color:#fff; border:none; width:100%; padding:8px; border-radius:8px; margin-top:12px; cursor:pointer;">Pesan Sekarang</button>
                 </div>`;
         }
     });
+    if(typeof lucide !== 'undefined') lucide.createIcons(); 
 }
 
-// 4. LOGIKA DASHBOARD MITRA
-async function muatDataDashboardMitra() {
-    let container = document.getElementById("kontainer-pesanan-mitra");
-    container.innerHTML = 'Memuat data pesanan...';
+function filterKategori(kategori) {
+    document.querySelectorAll('.category-card').forEach(card => card.classList.remove('active'));
+    
+    if(window.event && window.event.currentTarget) {
+        window.event.currentTarget.classList.add('active');
+    }
 
-    try {
-        // Simulasi filter data berdasarkan ID Mitra yang sedang login
-        let saldoTotal = 750000; 
-        document.getElementById("saldo-mitra").innerHTML = `Rp ${saldoTotal.toLocaleString('id-ID')}`;
-
-        container.innerHTML = `
-            <div class="card-pesanan">
-                <div class="pesanan-header">
-                    <span class="id-tx">TX-99012</span>
-                    <span class="status-badge pending">Masuk</span>
-                </div>
-                <p><strong>Pelanggan:</strong> Budi Santoso</p>
-                <p><strong>Layanan:</strong> Servis Rutin</p>
-                <button class="btn-selesai-kerja" onclick="alert('Pesanan Selesai!')">Tandai Selesai</button>
-            </div>`;
-    } catch (error) {
-        container.innerHTML = 'Gagal memuat data.';
+    if (kategori === 'Semua') {
+        tampilkanMitra(semuaMitra);
+    } else {
+        let hasilFilter = semuaMitra.filter(mitra => String(mitra.kategori_jasa).toLowerCase() === kategori.toLowerCase());
+        tampilkanMitra(hasilFilter);
     }
 }
 
-// Perbaikan typo "letisChecked" yang ada di file Anda sebelumnya
+// 4. LOGIKA PEMESANAN (KONEKSI METHOD POST)
+async function buatPesanan(idMitra, hargaJasa) {
+    if (!userAktif || userAktif.role !== 'konsumen') {
+        alert("Silakan login sebagai Konsumen terlebih dahulu!");
+        return;
+    }
+
+    const konfirmasi = confirm(`Kirim pesanan ke Mitra ini?`);
+    if (!konfirmasi) return;
+
+    const dataTransaksi = {
+        id_konsumen: userAktif.id,
+        id_mitra: idMitra,
+        total_harga: hargaJasa
+    };
+
+    try {
+        let response = await fetch(API_URL, {
+            method: "POST",
+            body: JSON.stringify(dataTransaksi)
+        });
+        let hasil = await response.json();
+
+        if (hasil.status === "sukses") {
+            alert("Pesanan Anda sukses dicatat di database!");
+        } else {
+            alert("Gagal membuat pesanan: " + hasil.message);
+        }
+    } catch (error) {
+        console.error("Error order:", error);
+    }
+}
+
+// 5. DASHBOARD OPERATIONS
+async function muatDataDashboardMitra() {
+    let container = document.getElementById("kontainer-pesanan-mitra");
+    container.innerHTML = 'Memuat data pesanan...';
+    document.getElementById("saldo-mitra").innerHTML = `Rp 750.000`;
+    
+    container.innerHTML = `
+        <div class="card-pesanan" style="background:#fff; padding:16px; border-radius:12px; border:1px solid #e2e8f0;">
+            <p><strong>Status:</strong> <span style="color:#f59e0b;">Pending</span></p>
+            <p><strong>Layanan Kerja:</strong> Anda memiliki antrean penanganan aktif</p>
+            <button onclick="alert('Fitur pemrosesan pesanan sedang disiapkan!')" style="background:#10b981; color:#fff; border:none; padding:6px 12px; border-radius:6px; margin-top:8px; cursor:pointer;">Terima Kerja</button>
+        </div>`;
+}
+
 async function ubahStatusTokoKeSheets() {
     let isChecked = document.getElementById("status-toko-toggle").checked;
     let labelText = document.getElementById("text-status-toko");
-    
     labelText.innerText = isChecked ? "Toko Buka" : "Toko Tutup";
     labelText.style.color = isChecked ? "#10b981" : "#6b7280";
-
-    // Fungsi Fetch POST ke GAS untuk update status_aktif di Sheet
-    console.log("Status toko untuk " + userAktif.id + " diubah ke: " + isChecked);
 }

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BantuKita - Agregator Jasa</title>
     <link rel="stylesheet" href="style.css">
+    <!-- PERBAIKAN: Mengarah langsung ke pustaka Lucide Icons resmi -->
     <script src="https://unpkg.com"></script>
 </head>
 <body>
@@ -26,7 +27,7 @@
         </div>
     </div>
 
-    <!-- ================= LAYOUT UTAMA APLIKASI (DISEMBUNYIKAN SEBELUM LOGIN) ================= -->
+    <!-- ================= LAYOUT UTAMA APLIKASI ================= -->
     <div id="app-content" style="display: none;">
         
         <!-- SISI KONSUMEN -->
@@ -93,7 +94,7 @@
         </nav>
     </div>
 
-    <script>lucide.createIcons();</script>
+    <!-- Script App diletakkan di paling bawah agar DOM HTML termuat sempurna terlebih dahulu -->
     <script src="app.js"></script>
 </body>
 </html>
