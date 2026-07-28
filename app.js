@@ -155,6 +155,7 @@ function filterKategori(kategori) {
 }
 
 // 4. LOGIKA PEMESANAN (KONEKSI METHOD POST)
+// ISI PERBAIKAN FUNGSI DI FILE APP.JS
 async function buatPesanan(idMitra, hargaJasa) {
     if (!userAktif || userAktif.role !== 'konsumen') {
         alert("Silakan login sebagai Konsumen terlebih dahulu!");
@@ -162,7 +163,7 @@ async function buatPesanan(idMitra, hargaJasa) {
     }
 
     const konfirmasi = confirm(`Kirim pesanan ke Mitra ini?`);
-    if (!konfirmasi) return;
+    if (!confirmasi) return;
 
     const dataTransaksi = {
         id_konsumen: userAktif.id,
@@ -171,8 +172,12 @@ async function buatPesanan(idMitra, hargaJasa) {
     };
 
     try {
+        // PERBAIKAN KRITIS: Mengubah headers ke text/plain untuk melewati proteksi CORS browser
         let response = await fetch(API_URL, {
             method: "POST",
+            headers: {
+                "Content-Type": "text/plain;charset=utf-8"
+            },
             body: JSON.stringify(dataTransaksi)
         });
         let hasil = await response.json();
@@ -184,6 +189,7 @@ async function buatPesanan(idMitra, hargaJasa) {
         }
     } catch (error) {
         console.error("Error order:", error);
+        alert("Gagal mengirim pesanan. Pastikan URL API sudah sesuai.");
     }
 }
 
