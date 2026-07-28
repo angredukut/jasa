@@ -1,5 +1,5 @@
 // PERBAIKAN: Ganti link di bawah ini dengan URL Web App Apps Script Anda yang asli!
-const API_URL = "https://script.google.com/macros/s/AKfycbxjhfDKXOhXac2MFzKpORXRUn65X9Wqy5G7GF2qmgFF54-Nkwah2pzeF2LSZrdP0-9S9Q/exec"; 
+const API_URL = "https://script.google.com/macros/s/AKfycbyn7pgda4P_bgOYA5u1bVsZwbj3lAGwEppQhsW5uHDTY2hYABMSJMIg_2NvH1HmwbkOsA/exec"; 
 
 let semuaMitra = [];
 let userAktif = null;
