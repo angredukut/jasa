@@ -1,5 +1,5 @@
 // SINKRONISASI: Menggunakan URL rilis /exec Anda yang sudah terbukti aktif secara publik
-const API_URL = "https://google.com"; 
+const API_URL = "https://script.google.com/macros/s/AKfycbyn7pgda4P_bgOYA5u1bVsZwbj3lAGwEppQhsW5uHDTY2hYABMSJMIg_2NvH1HmwbkOsA/exec"; 
 
 let semuaMitra = [];
 let userAktif = null;
