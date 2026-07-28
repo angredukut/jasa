@@ -32,7 +32,12 @@ async function prosesLogin() {
         
         if (tipeLoginSekarang === 'mitra') {
             // Mencari kecocokan ID Mitra dan PIN secara dinamis dari database Sheet
-            let akunDitemukan = dataMitra.find(m => m.id_mitra === idInput && String(m.pin_login) === pinInput);
+            // GANTI BAGIAN PENCARIAN MITRA DI APP.JS DENGAN INI:
+let akunDitemukan = dataMitra.find(m => 
+    String(m.id_mitra).toUpperCase() === idInput.toUpperCase() && 
+    String(m.pin_login) === pinInput
+);
+
             
             if (akunDitemukan) {
                 userAktif = { id: akunDitemukan.id_mitra, nama: akunDitemukan.nama_mitra, role: 'mitra' };
