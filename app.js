@@ -6,22 +6,31 @@ let userAktif = null;
 let tipeLoginSekarang = 'konsumen'; 
 
 // STRATEGI CTO: Begitu halaman HTML selesai dimuat, langsung unduh data dari Google Sheets di latar belakang
-window.addEventListener('DOMContentLoaded', () => {
-    if(typeof lucide !== 'undefined') lucide.createIcons();
-    ambilDataAwalDariSheets();
-});
-
-async function ambilDataAwalDariSheets() {
-    console.log("Memulai pengunduhan data latar belakang dari Google Sheets...");
-    try {
-        let response = await fetch(API_URL);
-        semuaMitra = await response.json();
-        console.log("Data Mitra Berhasil Disimpan:", semuaMitra);
-    } catch (error) {
-        console.error("Gagal memuat data awal dari Sheets:", error);
-    }
+function ambilDataAwalDariSheets() {
+    console.log("Memulai pengunduhan data via JSONP...");
+    
+    // Membuat elemen script dinamis untuk mem-bypass batasan CORS browser
+    const script = document.createElement('script');
+    
+    // Meminta Google Apps Script membungkus data ke dalam fungsi callback global
+    script.src = `${API_URL}?callback=handleJSONPResponse`;
+    
+    script.onerror = function() {
+        console.error("Gagal memuat skrip database.");
+    };
+    
+    document.body.appendChild(script);
 }
 
+// Fungsi callback global untuk menerima data dari Google Sheets
+window.handleJSONPResponse = function(data) {
+    if (Array.isArray(data)) {
+        semuaMitra = data;
+        console.log("Data Mitra Berhasil Disimpan dari JSONP:", semuaMitra);
+    } else {
+        console.error("Format data dari Sheets tidak sesuai:", data);
+    }
+};
 // 1. LOGIKA LOGIN & AUTH
 function setTipeLogin(tipe) {
     tipeLoginSekarang = tipe;
