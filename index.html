@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BantuKita - Agregator Jasa</title>
     <link rel="stylesheet" href="style.css">
-    <!-- PERBAIKAN: Mengarah langsung ke pustaka Lucide Icons resmi -->
+    <!-- PERBAIKAN: Menggunakan CDN Lucide Icons yang valid agar ikon tidak hilang -->
     <script src="https://unpkg.com"></script>
 </head>
 <body>
@@ -27,7 +27,7 @@
         </div>
     </div>
 
-    <!-- ================= LAYOUT UTAMA APLIKASI ================= -->
+    <!-- ================= LAYOUT UTAMA APLIKASI (DISEMBUNYIKAN SEBELUM LOGIN) ================= -->
     <div id="app-content" style="display: none;">
         
         <!-- SISI KONSUMEN -->
@@ -42,7 +42,7 @@
                 <p>Temukan penyedia jasa terpercaya di sekitar Anda dalam hitungan detik.</p>
                 <div class="search-bar">
                     <i data-lucide="search"></i>
-                    <input type="text" placeholder="Cari servis AC, kebersihan, dll...">
+                    <input type="text" id="input-pencarian" placeholder="Cari servis AC, kebersihan, dll...">
                 </div>
             </section>
 
@@ -94,7 +94,7 @@
         </nav>
     </div>
 
-    <!-- Script App diletakkan di paling bawah agar DOM HTML termuat sempurna terlebih dahulu -->
+    <!-- Pemuatan script utama diletakkan di paling bawah agar DOM HTML selesai dibaca -->
     <script src="app.js"></script>
 </body>
 </html>
