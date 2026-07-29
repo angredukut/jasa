@@ -3,98 +3,280 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BantuKita - Agregator Jasa</title>
+    <title>BantuKita - Marketplace Jasa Terpercaya & Modern</title>
+    <!-- Font Family Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <!-- PERBAIKAN: Menggunakan CDN Lucide Icons yang valid agar ikon tidak hilang -->
-    <script src="https://unpkg.com"></script>
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
 
     <!-- ================= SCREEN HALAMAN LOGIN ================= -->
     <div id="halaman-login" class="login-screen">
-        <div class="login-box">
-            <div class="logo" style="text-align: center; margin-bottom: 20px;">Bantu<span>Kita</span></div>
-            <h3>Masuk ke Platform</h3>
-            
-            <div class="tab-login">
-                <button id="tab-btn-konsumen" class="btn-tab active" onclick="setTipeLogin('konsumen')">Konsumen</button>
-                <button id="tab-btn-mitra" class="btn-tab" onclick="setTipeLogin('mitra')">Mitra UMKM</button>
+        <div class="login-container">
+            <!-- Sisi Ilustrasi / Brand (Visible di Tablet/Desktop) -->
+            <div class="login-hero-side">
+                <div class="brand-badge">
+                    <div class="brand-icon"><i data-lucide="sparkles"></i></div>
+                    <span>BantuKita 2026 Edition</span>
+                </div>
+                <h2>Solusi Layanan Jasa Terbaik & Terpercaya.</h2>
+                <p>Temukan profesional terbaik untuk perawatan rumah, elektronik, hingga kebersihan hanya dalam hitungan detik.</p>
+                <div class="login-stats">
+                    <div class="stat-item">
+                        <span class="stat-num">10rb+</span>
+                        <span class="stat-label">Mitra Terverifikasi</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-num">4.9★</span>
+                        <span class="stat-label">Rating Kepuasan</span>
+                    </div>
+                </div>
             </div>
 
-            <input type="text" id="login-id" placeholder="Masukkan ID (Contoh: USR-001 / MITRA-001)">
-            <input type="password" id="login-pin" placeholder="Masukkan 6 Digit PIN">
-            <button class="btn-login-submit" onclick="prosesLogin()">Masuk Sekarang</button>
+            <!-- Form Card Login -->
+            <div class="login-card">
+                <div class="login-header">
+                    <div class="logo">Bantu<span>Kita</span></div>
+                    <h3>Selamat Datang Kembali</h3>
+                    <p>Silakan masuk ke akun Anda untuk melanjutkan</p>
+                </div>
+
+                <!-- Tab Segmented Control -->
+                <div class="tab-login">
+                    <button id="tab-btn-konsumen" class="btn-tab active" onclick="setTipeLogin('konsumen')">
+                        <i data-lucide="user"></i> Konsumen
+                    </button>
+                    <button id="tab-btn-mitra" class="btn-tab" onclick="setTipeLogin('mitra')">
+                        <i data-lucide="briefcase"></i> Mitra UMKM
+                    </button>
+                </div>
+
+                <!-- Form Group dengan Floating Label -->
+                <div class="form-group">
+                    <div class="input-wrapper">
+                        <input type="text" id="login-id" placeholder=" " required autocomplete="off">
+                        <label for="login-id">ID Pengguna (Contoh: USR-001 / MITRA-001)</label>
+                        <i data-lucide="id-card" class="input-icon"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="input-wrapper">
+                        <input type="password" id="login-pin" placeholder=" " required autocomplete="off">
+                        <label for="login-pin">6 Digit PIN Keamanan</label>
+                        <i data-lucide="lock" class="input-icon"></i>
+                    </div>
+                </div>
+
+                <button class="btn-login-submit" onclick="prosesLogin()">
+                    <span>Masuk Sekarang</span>
+                    <i data-lucide="arrow-right"></i>
+                </button>
+            </div>
         </div>
     </div>
 
-    <!-- ================= LAYOUT UTAMA APLIKASI (DISEMBUNYIKAN SEBELUM LOGIN) ================= -->
+    <!-- ================= LAYOUT UTAMA APLIKASI ================= -->
     <div id="app-content" style="display: none;">
         
-        <!-- SISI KONSUMEN -->
+        <!-- ================= SISI KONSUMEN ================= -->
         <div id="halaman-konsumen">
+            <!-- Header Sticky Modern -->
             <header class="main-header">
-                <div class="logo">Bantu<span>Kita</span></div>
-                <div class="user-badge"><i data-lucide="user"></i> <span id="nama-user-aktif">Halo</span></div>
+                <div class="header-container">
+                    <div class="logo">Bantu<span>Kita</span></div>
+                    
+                    <div class="header-location">
+                        <i data-lucide="map-pin"></i>
+                        <div class="loc-text">
+                            <span class="loc-label">Lokasi Anda</span>
+                            <span class="loc-val">Jakarta Selatan, ID</span>
+                        </div>
+                    </div>
+
+                    <div class="header-actions">
+                        <button class="icon-btn" aria-label="Notifikasi">
+                            <i data-lucide="bell"></i>
+                            <span class="dot-badge"></span>
+                        </button>
+                        <div class="user-badge">
+                            <div class="avatar-circle"><i data-lucide="user"></i></div>
+                            <span id="nama-user-aktif">Halo</span>
+                        </div>
+                    </div>
+                </div>
             </header>
 
+            <!-- Hero Section dengan Gradient & Floating Search -->
             <section class="hero-section">
-                <h1>Butuh Jasa Kapan Saja?</h1>
-                <p>Temukan penyedia jasa terpercaya di sekitar Anda dalam hitungan detik.</p>
-                <div class="search-bar">
-                    <i data-lucide="search"></i>
-                    <input type="text" id="input-pencarian" placeholder="Cari servis AC, kebersihan, dll...">
+                <div class="hero-content">
+                    <div class="badge-tag"><i data-lucide="shield-check"></i> Layanan Terjamin & Bergaransi</div>
+                    <h1>Butuh Jasa Professional Kapan Saja?</h1>
+                    <p>Temukan ribuan penyedia jasa terverifikasi di sekitar Anda dengan harga transparan.</p>
+
+                    <!-- Bar Pencarian Interactive -->
+                    <div class="search-bar">
+                        <i data-lucide="search" class="search-icon"></i>
+                        <input type="text" id="input-pencarian" placeholder="Cari servis AC, kebersihan rumah, ledeng, dll...">
+                        <button class="btn-search">Cari Jasa</button>
+                    </div>
+
+                    <!-- Quick Tags -->
+                    <div class="quick-tags">
+                        <span>Populer:</span>
+                        <button onclick="filterKategori('Servis AC')">Servis AC</button>
+                        <button onclick="filterKategori('Home Cleaning')">Cleaning</button>
+                        <button onclick="filterKategori('Ledeng')">Pipa & Ledeng</button>
+                    </div>
                 </div>
             </section>
 
-            <section class="section-container">
-                <h2 class="section-title">Kategori Layanan</h2>
-                <div class="category-grid">
-                    <div class="category-card active" onclick="filterKategori('Semua')"><div class="icon-box"><i data-lucide="layout-grid"></i></div><span>Semua</span></div>
-                    <div class="category-card" onclick="filterKategori('Servis AC')"><div class="icon-box"><i data-lucide="wind"></i></div><span>Servis AC</span></div>
-                    <div class="category-card" onclick="filterKategori('Ledeng')"><div class="icon-box"><i data-lucide="droplet"></i></div><span>Pipa</span></div>
-                    <div class="category-card" onclick="filterKategori('Home Cleaning')"><div class="icon-box"><i data-lucide="sparkles"></i></div><span>Cleaning</span></div>
-                </div>
-            </section>
+            <main class="page-body">
+                <!-- Grid Kategori -->
+                <section class="section-container">
+                    <div class="section-header">
+                        <div>
+                            <h2 class="section-title">Kategori Layanan Utama</h2>
+                            <p class="section-subtitle">Pilih kategori jasa yang Anda butuhkan</p>
+                        </div>
+                    </div>
+                    <div class="category-grid">
+                        <div class="category-card active" onclick="filterKategori('Semua')">
+                            <div class="icon-box"><i data-lucide="layout-grid"></i></div>
+                            <span>Semua Jasa</span>
+                        </div>
+                        <div class="category-card" onclick="filterKategori('Servis AC')">
+                            <div class="icon-box"><i data-lucide="wind"></i></div>
+                            <span>Servis AC</span>
+                        </div>
+                        <div class="category-card" onclick="filterKategori('Ledeng')">
+                            <div class="icon-box"><i data-lucide="droplet"></i></div>
+                            <span>Pipa & Ledeng</span>
+                        </div>
+                        <div class="category-card" onclick="filterKategori('Home Cleaning')">
+                            <div class="icon-box"><i data-lucide="sparkles"></i></div>
+                            <span>Home Cleaning</span>
+                        </div>
+                    </div>
+                </section>
 
-            <section class="section-container" style="margin-bottom: 40px;">
-                <h2 class="section-title">Mitra Terdekat Untuk Anda</h2>
-                <div id="kontainer-mitra" class="mitra-grid"></div>
-            </section>
+                <!-- Grid Mitra / Penyedia Jasa -->
+                <section class="section-container">
+                    <div class="section-header">
+                        <div>
+                            <h2 class="section-title">Mitra Terdekat Untuk Anda</h2>
+                            <p class="section-subtitle">Rekomendasi teknisi & tenaga ahli dengan ulasan terbaik</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Kontainer Kartu Jasa -->
+                    <div id="kontainer-mitra" class="mitra-grid">
+                        <!-- Loading Skeleton Placeholder saat memuat -->
+                        <div class="skeleton-card"></div>
+                        <div class="skeleton-card"></div>
+                        <div class="skeleton-card"></div>
+                    </div>
+                </section>
+            </main>
         </div>
 
-        <!-- SISI DASHBOARD MITRA -->
+        <!-- ================= SISI DASHBOARD MITRA ================= -->
         <div id="halaman-mitra" style="display: none;">
             <header class="main-header">
-                <div class="logo">Panel<span>Mitra</span></div>
-                <label class="switch-container">
-                    <span id="text-status-toko">Toko Buka</span>
-                    <input type="checkbox" id="status-toko-toggle" checked onchange="ubahStatusTokoKeSheets()">
-                    <span class="slider"></span>
-                </label>
+                <div class="header-container">
+                    <div class="logo">Panel<span>Mitra</span></div>
+                    
+                    <div class="header-actions">
+                        <label class="switch-container">
+                            <span id="text-status-toko">Toko Buka</span>
+                            <input type="checkbox" id="status-toko-toggle" checked onchange="ubahStatusTokoKeSheets()">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
             </header>
 
-            <section class="section-container">
-                <div class="wallet-card">
-                    <div class="wallet-info"><span>Pendapatan Dompet</span><h2 id="saldo-mitra">Rp 0</h2></div>
-                    <button class="btn-withdraw">Tarik Tunai</button>
-                </div>
-            </section>
+            <main class="page-body">
+                <!-- SaaS Dashboard Header Stats -->
+                <section class="section-container">
+                    <div class="dashboard-grid">
+                        <!-- Wallet Card -->
+                        <div class="wallet-card">
+                            <div class="wallet-top">
+                                <div>
+                                    <span class="wallet-label">Total Saldo Dompet</span>
+                                    <h2 id="saldo-mitra">Rp 0</h2>
+                                </div>
+                                <div class="wallet-icon-box"><i data-lucide="wallet"></i></div>
+                            </div>
+                            <div class="wallet-actions">
+                                <button class="btn-withdraw"><i data-lucide="arrow-up-right"></i> Tarik Tunai</button>
+                                <button class="btn-history"><i data-lucide="history"></i> Riwayat</button>
+                            </div>
+                        </div>
 
-            <section class="section-container">
-                <h2 class="section-title">Antrean Kerja Anda (<span id="nama-mitra-aktif">-</span>)</h2>
-                <div id="kontainer-pesanan-mitra" class="mitra-grid"></div>
-            </section>
+                        <!-- Stats Ringkas -->
+                        <div class="stats-card">
+                            <div class="stat-header">
+                                <span class="stat-title">Performa Minggu Ini</span>
+                                <span class="badge-growth">+12.5%</span>
+                            </div>
+                            <div class="stats-row">
+                                <div class="sub-stat">
+                                    <span class="sub-num">24</span>
+                                    <span class="sub-label">Pesanan Selesai</span>
+                                </div>
+                                <div class="sub-stat">
+                                    <span class="sub-num">4.9</span>
+                                    <span class="sub-label">Rating Rating</span>
+                                </div>
+                            </div>
+                            <div class="progress-bar-container">
+                                <div class="progress-info">
+                                    <span>Target Mingguan (24/30)</span>
+                                    <span>80%</span>
+                                </div>
+                                <div class="progress-bar"><div class="progress-fill" style="width: 80%;"></div></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Antrean Pesanan Aktif -->
+                <section class="section-container">
+                    <div class="section-header">
+                        <div>
+                            <h2 class="section-title">Antrean Kerja Aktif</h2>
+                            <p class="section-subtitle">Daftar pesanan dari konsumen untuk <strong id="nama-mitra-aktif">-</strong></p>
+                        </div>
+                    </div>
+                    <div id="kontainer-pesanan-mitra" class="mitra-grid"></div>
+                </section>
+            </main>
         </div>
 
-        <!-- Navigation Bar -->
+        <!-- ================= BOTTOM NAVIGATION FLOATING ================= -->
         <nav class="bottom-nav">
-            <a href="#" id="nav-home" class="nav-item" onclick="pindahHalaman('konsumen')"><i data-lucide="home"></i><span>Cari Jasa</span></a>
-            <a href="#" id="nav-mitra" class="nav-item" onclick="pindahHalaman('mitra')"><i data-lucide="store"></i><span>Dashboard</span></a>
-            <a href="#" class="nav-item" onclick="logout()"><i data-lucide="log-out"></i><span>Keluar</span></a>
+            <a href="javascript:void(0)" id="nav-home" class="nav-item active" onclick="pindahHalaman('konsumen')">
+                <i data-lucide="search"></i>
+                <span>Cari Jasa</span>
+            </a>
+            <a href="javascript:void(0)" id="nav-mitra" class="nav-item" onclick="pindahHalaman('mitra')">
+                <i data-lucide="layout-dashboard"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="javascript:void(0)" class="nav-item" onclick="logout()">
+                <i data-lucide="log-out"></i>
+                <span>Keluar</span>
+            </a>
         </nav>
     </div>
 
-    <!-- Pemuatan script utama diletakkan di paling bawah agar DOM HTML selesai dibaca -->
+    <!-- Script JavaScript -->
     <script src="app.js"></script>
 </body>
 </html>
